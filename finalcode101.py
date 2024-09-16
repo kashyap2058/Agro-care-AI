@@ -49,21 +49,21 @@ class_names = train_dataset.classes
 num_classes = 41
 
 # Custom Dataset class to load test images
-class TestDataset(Dataset):
-    def __init__(self, img_dir, transform=None):
-        self.img_dir = img_dir
-        self.transform = transform
-        self.img_paths = [os.path.join(img_dir, fname) for fname in os.listdir(img_dir) if fname.endswith('.jpg')]
+# class TestDataset(Dataset):
+#     def __init__(self, img_dir, transform=None):
+#         self.img_dir = img_dir
+#         self.transform = transform
+#         self.img_paths = [os.path.join(img_dir, fname) for fname in os.listdir(img_dir) if fname.endswith('.jpg')]
 
-    def __len__(self):
-        return len(self.img_paths)
+#     def __len__(self):
+#         return len(self.img_paths)
 
-    def __getitem__(self, idx):
-        img_path = self.img_paths[idx]
-        image = Image.open(img_path).convert("RGB")
-        if self.transform:
-            image = self.transform(image)
-        return image, img_path
+#     def __getitem__(self, idx):
+#         img_path = self.img_paths[idx]
+#         image = Image.open(img_path).convert("RGB")
+#         if self.transform:
+#             image = self.transform(image)
+#         return image, img_path
 
 # Load the test dataset
 test_dataset = TestDataset(test_img_dir, transform=data_transforms['val'])
@@ -169,27 +169,30 @@ def plot_metrics(train_loss, val_loss, train_acc, val_acc):
 # Plot the performance metrics
 plot_metrics(train_loss, val_loss, train_acc, val_acc)
 
+print("Training complete!")
+
+# Testing the model is done separately
 # Testing the model
-def test_model_classwise(model, class_names):
-    model.eval()
-    all_preds = []
-    image_paths = []
+# def test_model_classwise(model, class_names):
+#     model.eval()
+#     all_preds = []
+#     image_paths = []
 
-    with torch.no_grad():
-        for inputs, paths in tqdm(test_loader, desc='Testing'):
-            inputs = inputs.to(device)
+#     with torch.no_grad():
+#         for inputs, paths in tqdm(test_loader, desc='Testing'):
+#             inputs = inputs.to(device)
 
-            outputs = model(inputs)
-            _, preds = torch.max(outputs, 1)
+#             outputs = model(inputs)
+#             _, preds = torch.max(outputs, 1)
 
-            all_preds.extend(preds.cpu().numpy())
-            image_paths.extend(paths)
+#             all_preds.extend(preds.cpu().numpy())
+#             image_paths.extend(paths)
 
-    for i, path in enumerate(image_paths):
-        print(f"Image: {path}, Predicted class: {class_names[all_preds[i]]}")
+#     for i, path in enumerate(image_paths):
+#         print(f"Image: {path}, Predicted class: {class_names[all_preds[i]]}")
 
-# Evaluate on test set with predictions
-test_model_classwise(model, class_names)
+# # Evaluate on test set with predictions
+# test_model_classwise(model, class_names)
 
 # Save the trained model
 model_path = 'model.pth'
