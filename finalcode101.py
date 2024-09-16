@@ -66,8 +66,8 @@ num_classes = 41
 #         return image, img_path
 
 # Load the test dataset
-test_dataset = TestDataset(test_img_dir, transform=data_transforms['val'])
-test_loader = DataLoader(test_dataset, batch_size=batch_size, shuffle=False, pin_memory=True)
+# test_dataset = TestDataset(test_img_dir, transform=data_transforms['val'])
+# test_loader = DataLoader(test_dataset, batch_size=batch_size, shuffle=False, pin_memory=True)
 
 # Load pre-trained ResNet101 and modify the fully connected layer
 model = models.resnet101(weights=True)
